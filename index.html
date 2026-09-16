@@ -218,6 +218,78 @@
   .reset-btn:hover{transform:translateY(-1px);}
   .reset-btn:active{transform:translateY(1px); box-shadow:0 1px 0 var(--shadow);}
 
+  /* ---------- download panel ---------- */
+  .submit-panel{
+    background:var(--panel);
+    border:2px solid var(--line);
+    border-radius:16px;
+    padding:16px 18px;
+    box-shadow:0 3px 0 var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .submit-panel h3{
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:1.05rem;
+    margin:0;
+  }
+  .id-fields{display:flex; gap:8px; min-width:0;}
+  .id-field{flex:1; min-width:0; display:flex; flex-direction:column; gap:3px;}
+  .id-field label{font-size:0.78rem; color:var(--ink-soft);}
+  .id-field input, .id-field select{
+    width:100%;
+    min-width:0;
+    border:2px solid var(--line);
+    border-radius:10px;
+    padding:7px 9px;
+    font-size:0.92rem;
+    font-family:'Noto Sans KR',sans-serif;
+    background:var(--paper-2);
+    color:var(--ink);
+  }
+  .id-field select{cursor:pointer;}
+  .id-field input:focus, .id-field select:focus{border-color:var(--amethyst); outline:none;}
+  .submit-btn{
+    font-family:'Noto Sans KR',sans-serif;
+    font-weight:700;
+    font-size:0.9rem;
+    background:var(--malachite);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    padding:11px 14px;
+    cursor:pointer;
+    box-shadow:0 3px 0 var(--shadow);
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .submit-btn:hover{transform:translateY(-1px);}
+  .submit-btn:disabled{opacity:0.6; cursor:default; transform:none;}
+  .submit-note{font-size:0.78rem; color:var(--ink-soft); line-height:1.5; margin:0;}
+  .submit-note.warn{color:var(--garnet);}
+
+  /* ---------- static export snapshot ---------- */
+  .export-wrap{
+    display:inline-block;
+    font-family:'Noto Sans KR',sans-serif;
+    color:var(--ink);
+  }
+  .export-header{margin:0 0 16px;}
+  .export-header h2{font-size:1.4rem; font-weight:800; margin:0 0 4px;}
+  .export-header p{margin:0; font-size:0.95rem; color:var(--ink-soft);}
+  .export-static-text{
+    flex:1;
+    min-width:0;
+    padding:6px 2px;
+    font-size:0.95rem;
+    color:var(--ink);
+    border-bottom:2px solid var(--line);
+    text-align:left;
+  }
+  .export-static-text.export-empty{color:var(--ink-soft); opacity:0.75;}
+  .name-row .export-static-text{border-bottom:2px solid var(--line);}
+  .export-wrap .del-q-btn, .export-wrap .add-q-btn{display:none;}
+
   /* ---------- workspace / sections ---------- */
   .workspace{display:flex; flex-direction:column; gap:26px;}
   .section-title{
@@ -527,11 +599,37 @@
           <li><span class="step-num">2</span><span class="step-text">답이 '예'와 '아니오'로 딱 나뉘는 질문을 적어요.</span></li>
           <li><span class="step-num">3</span><span class="step-text">하나로 좁혀졌다면 그 자리에 카드를 놓고, 아니라면 ➕ 질문 추가로 다음 질문을 이어가요.</span></li>
           <li><span class="step-num">4</span><span class="step-text">다섯 장을 모두 놓으면 완성! 질문을 잘못 만들었다면 ✕로 지울 수 있어요.</span></li>
-          <li><span class="step-num">5</span><span class="step-text">완성했다면 화면을 캡처해서 구글 클래스룸 과제로 제출하세요!</span></li>
+          <li><span class="step-num">5</span><span class="step-text">완성했다면 반과 이름을 적고 "결과 이미지로 저장"을 눌러 다운로드한 뒤, 구글 클래스룸 과제로 제출하세요!</span></li>
         </ol>
         <p class="tip">💡 앞에서 이미 사용한 특징과 겹치지 않는 질문을 만들어야 해요! 질문으로 완전히 구별되지 않으면 한 칸에 카드를 여러 장(최대 4장) 같이 놓아도 돼요.</p>
       </details>
       <button id="resetBtn" class="reset-btn" type="button">카드 다시 담기 ↺</button>
+
+      <div class="submit-panel">
+        <h3>완성한 검색표 다운로드</h3>
+        <div class="id-fields">
+          <div class="id-field">
+            <label for="classSelect">반</label>
+            <select id="classSelect">
+              <option value="">선택</option>
+              <option value="1">1반</option>
+              <option value="2">2반</option>
+              <option value="3">3반</option>
+              <option value="4">4반</option>
+              <option value="5">5반</option>
+              <option value="6">6반</option>
+              <option value="7">7반</option>
+              <option value="8">8반</option>
+            </select>
+          </div>
+          <div class="id-field">
+            <label for="nameInput">이름</label>
+            <input id="nameInput" type="text" placeholder="이름을 적어주세요" autocomplete="off">
+          </div>
+        </div>
+        <button id="downloadBtn" class="submit-btn" type="button">🖼️ 결과 이미지로 저장</button>
+        <p id="downloadNote" class="submit-note">반과 이름을 적으면 이미지에 함께 표시돼요. 다운로드한 이미지를 구글 클래스룸 과제로 제출하세요!</p>
+      </div>
     </aside>
 
     <main class="workspace">
@@ -554,6 +652,7 @@
   <p id="status" class="status" role="status"></p>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (function(){
   "use strict";
@@ -1075,12 +1174,191 @@
     updateStatus();
   }
 
+  /* ---------- download result as image ----------
+     Works two ways depending on where this page is running:
+     - Inside a Claude Artifact, the sandboxed viewer blocks a plain
+       <a download> click, so we use the platform's "downloads" capability.
+     - Hosted anywhere else (e.g. GitHub Pages), there is no such sandbox
+       and window.claude does not exist, so we fall back to a normal
+       blob-URL <a download> click, which works in any regular browser. */
+  var downloadsApi = null;
+  var downloadsState = "pending"; // pending | ready
+
+  function initDownloads(){
+    try{
+      if (typeof claude !== "undefined" && claude && typeof claude.use === "function"){
+        claude.use("downloads").then(function(d){
+          downloadsApi = d; // null is fine - saveBlobAsFile() falls back automatically
+          downloadsState = "ready";
+          updateDownloadNote();
+        }).catch(function(){
+          downloadsApi = null;
+          downloadsState = "ready";
+          updateDownloadNote();
+        });
+      } else {
+        // not running inside the Claude artifact viewer (e.g. GitHub Pages) -
+        // the plain-browser fallback handles saving instead
+        downloadsApi = null;
+        downloadsState = "ready";
+        updateDownloadNote();
+      }
+    } catch(e){
+      downloadsApi = null;
+      downloadsState = "ready";
+      updateDownloadNote();
+    }
+  }
+
+  function saveBlobAsFile(blob, filename){
+    if (downloadsApi){
+      return downloadsApi.save({ filename: filename, data: blob });
+    }
+    return new Promise(function(resolve, reject){
+      try{
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+        resolve({ status: "saved" });
+      } catch(err){
+        reject(err);
+      }
+    });
+  }
+
+  function updateDownloadNote(){
+    var note = document.getElementById("downloadNote");
+    if (!note) return;
+    note.textContent = "반과 이름을 적으면 이미지에 함께 표시돼요. 다운로드한 이미지를 구글 클래스룸 과제로 제출하세요!";
+    note.classList.remove("warn");
+  }
+
+  /** Turns a live <input>/<select> into a plain static element carrying
+   * its current value, so the exported snapshot shows what the student
+   * typed (cloneNode alone does not copy live form values). */
+  function makeStaticField(sourceEl){
+    var div = document.createElement("div");
+    div.className = "export-static-text";
+    var val = "";
+    if (sourceEl.tagName === "SELECT"){
+      var opt = sourceEl.options[sourceEl.selectedIndex];
+      val = opt ? opt.textContent : "";
+      if (!sourceEl.value) val = "";
+    } else {
+      val = sourceEl.value.trim();
+    }
+    if (val){
+      div.textContent = val;
+    } else {
+      div.textContent = sourceEl.placeholder || sourceEl.getAttribute("aria-label") || "";
+      div.classList.add("export-empty");
+    }
+    return div;
+  }
+
+  function buildExportSnapshot(){
+    var wrap = document.createElement("div");
+    wrap.className = "export-wrap";
+    wrap.style.background = "var(--paper)";
+    wrap.style.padding = "24px";
+
+    var header = document.createElement("div");
+    header.className = "export-header";
+    var classVal = document.getElementById("classSelect").value;
+    var nameVal = document.getElementById("nameInput").value.trim();
+    var who = (classVal ? classVal + "반 " : "") + (nameVal || "이름 미입력");
+    header.innerHTML = "<h2>광물 검색표 결과</h2><p>" + who + "</p>";
+    wrap.appendChild(header);
+
+    var flowClone = document.getElementById("keyFlow").cloneNode(true);
+    flowClone.style.minWidth = "0";
+    wrap.appendChild(flowClone);
+
+    var namesClone = document.getElementById("nameList").cloneNode(true);
+    namesClone.style.marginTop = "20px";
+    wrap.appendChild(namesClone);
+
+    // swap every cloned input/select for a static text node carrying the
+    // live value, pairing clones with originals in DOM order
+    var origInputs = document.querySelectorAll("#keyFlow .q-input, #nameList .name-input");
+    var cloneInputs = wrap.querySelectorAll(".q-input, .name-input");
+    for (var i=0;i<cloneInputs.length;i++){
+      if (!origInputs[i]) continue;
+      cloneInputs[i].parentNode.replaceChild(makeStaticField(origInputs[i]), cloneInputs[i]);
+    }
+
+    return wrap;
+  }
+
+  function exportResultsAsImage(){
+    var btn = document.getElementById("downloadBtn");
+    var note = document.getElementById("downloadNote");
+    if (downloadsState !== "ready" || typeof html2canvas === "undefined"){
+      note.textContent = "이 화면에서는 다운로드 기능을 쓸 수 없어요. 화면을 캡처해서 제출해주세요.";
+      note.classList.add("warn");
+      return;
+    }
+    var classVal = document.getElementById("classSelect").value;
+    var nameVal = document.getElementById("nameInput").value.trim();
+    note.classList.remove("warn");
+    btn.disabled = true;
+    btn.textContent = "이미지 만드는 중…";
+
+    var snapshot = buildExportSnapshot();
+    snapshot.style.position = "fixed";
+    snapshot.style.left = "-99999px";
+    snapshot.style.top = "0";
+    document.body.appendChild(snapshot);
+
+    var bg = getComputedStyle(document.body).backgroundColor || "#ffffff";
+    html2canvas(snapshot, { backgroundColor: bg, scale: 2 }).then(function(canvas){
+      document.body.removeChild(snapshot);
+      canvas.toBlob(function(blob){
+        if (!blob){
+          btn.disabled = false;
+          btn.textContent = "🖼️ 결과 이미지로 저장";
+          note.textContent = "이미지를 만들지 못했어요. 다시 눌러주세요.";
+          note.classList.add("warn");
+          return;
+        }
+        var filename = "검색표_" + (classVal ? classVal + "반_" : "") + (nameVal || "결과") + ".png";
+        saveBlobAsFile(blob, filename).then(function(){
+          btn.disabled = false;
+          btn.textContent = "🖼️ 결과 이미지로 저장";
+          note.textContent = "다운로드 완료! 이미지를 구글 클래스룸 과제로 제출하세요.";
+        }).catch(function(err){
+          btn.disabled = false;
+          btn.textContent = "🖼️ 결과 이미지로 저장";
+          if (err && err.code === "declined"){
+            note.textContent = "다운로드를 취소했어요.";
+          } else {
+            note.textContent = "다운로드에 실패했어요. 화면을 캡처해서 제출해도 괜찮아요.";
+            note.classList.add("warn");
+          }
+        });
+      }, "image/png");
+    }).catch(function(){
+      if (snapshot.parentNode) document.body.removeChild(snapshot);
+      btn.disabled = false;
+      btn.textContent = "🖼️ 결과 이미지로 저장";
+      note.textContent = "이미지를 만들지 못했어요. 화면을 캡처해서 제출해도 괜찮아요.";
+      note.classList.add("warn");
+    });
+  }
+
   function init(){
     var tray = document.getElementById("tray");
     LETTERS.forEach(function(letter){ tray.appendChild(buildCard(letter)); });
     renderFlow();
     renderNameList();
     document.getElementById("resetBtn").addEventListener("click", resetCards);
+    document.getElementById("downloadBtn").addEventListener("click", exportResultsAsImage);
+    initDownloads();
     updateStatus();
   }
 
